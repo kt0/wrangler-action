@@ -30,6 +30,9 @@ type PackageManagerValue = keyof typeof PACKAGE_MANAGERS;
 function detectPackageManager(
 	workingDirectory = ".",
 ): PackageManagerValue | null {
+	if (existsSync(path.join(workingDirectory, "bun.lockb"))) {
+		return "bun";
+	}
 	if (existsSync(path.join(workingDirectory, "package-lock.json"))) {
 		return "npm";
 	}
@@ -38,9 +41,6 @@ function detectPackageManager(
 	}
 	if (existsSync(path.join(workingDirectory, "pnpm-lock.yaml"))) {
 		return "pnpm";
-	}
-	if (existsSync(path.join(workingDirectory, "bun.lockb"))) {
-		return "bun";
 	}
 	return null;
 }
